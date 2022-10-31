@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = C$:/Users/alexa/Documents/KUL/BigData/Assignment1/src/cmake-build-debug/
+cmake_ninja_workdir = C$:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target bdap_assignment1
 
@@ -49,7 +49,7 @@ cmake_ninja_workdir = C$:/Users/alexa/Documents/KUL/BigData/Assignment1/src/cmak
 
 build cmake_object_order_depends_target_bdap_assignment1: phony || CMakeFiles/bdap_assignment1.dir
 
-build CMakeFiles/bdap_assignment1.dir/main.cpp.obj: CXX_COMPILER__bdap_assignment1_Debug C$:/Users/alexa/Documents/KUL/BigData/Assignment1/src/main.cpp || cmake_object_order_depends_target_bdap_assignment1
+build CMakeFiles/bdap_assignment1.dir/main.cpp.obj: CXX_COMPILER__bdap_assignment1_Debug C$:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/main.cpp || cmake_object_order_depends_target_bdap_assignment1
   DEP_FILE = CMakeFiles\bdap_assignment1.dir\main.cpp.obj.d
   FLAGS = -g
   OBJECT_DIR = CMakeFiles\bdap_assignment1.dir
@@ -81,7 +81,7 @@ build bdap_assignment1.exe: CXX_EXECUTABLE_LINKER__bdap_assignment1_Debug CMakeF
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\alexa\Documents\KUL\BigData\Assignment1\src\cmake-build-debug && D:\Programmas\CLion\bin\cmake\win\bin\cmake.exe -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\Users\alexa\Documents\KUL\BigData\Assignment1\Assignment1_BigData\cmake-build-debug && D:\Programmas\CLion\bin\cmake\win\bin\cmake.exe -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -92,7 +92,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\alexa\Documents\KUL\BigData\Assignment1\src\cmake-build-debug && D:\Programmas\CLion\bin\cmake\win\bin\cmake.exe --regenerate-during-build -SC:\Users\alexa\Documents\KUL\BigData\Assignment1\src -BC:\Users\alexa\Documents\KUL\BigData\Assignment1\src\cmake-build-debug"
+  COMMAND = cmd.exe /C "cd /D C:\Users\alexa\Documents\KUL\BigData\Assignment1\Assignment1_BigData\cmake-build-debug && D:\Programmas\CLion\bin\cmake\win\bin\cmake.exe --regenerate-during-build -SC:\Users\alexa\Documents\KUL\BigData\Assignment1\Assignment1_BigData -BC:\Users\alexa\Documents\KUL\BigData\Assignment1\Assignment1_BigData\cmake-build-debug"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -110,7 +110,7 @@ build bdap_assignment1: phony bdap_assignment1.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/alexa/Documents/KUL/BigData/Assignment1/src/cmake-build-debug
+# Folder: C:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug
 
 build all: phony bdap_assignment1.exe
 

@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = D:\Programmas\CLion\bin\cmake\win\bin\cmake.exe --regenerate-during-build -SC:\Users\alexa\Documents\KUL\BigData\Assignment1\src -BC:\Users\alexa\Documents\KUL\BigData\Assignment1\src\cmake-build-debug
+  command = D:\Programmas\CLion\bin\cmake\win\bin\cmake.exe --regenerate-during-build -SC:\Users\alexa\Documents\KUL\BigData\Assignment1\Assignment1_BigData -BC:\Users\alexa\Documents\KUL\BigData\Assignment1\Assignment1_BigData\cmake-build-debug
   description = Re-running CMake...
   generator = 1
 
