@@ -41,7 +41,7 @@ public:
     void update_(const Email &email)
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
-        for (int i = 0; i < email.num_words(); i++)
+        while (iter)
         {
             if (email.is_spam())
             {
@@ -70,7 +70,7 @@ public:
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
         double count = 0;
-        for (int i = 0; i < email.num_words(); i++)
+        while (iter)
         {
             count += log(buckets_[offset + get_bucket(iter.next())]);
         }

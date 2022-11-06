@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     }
 
     std::cout << "window:  " << window << std::endl;
-    std::cout << "ngram_k: " << window << std::endl;
+    std::cout << "ngram_k: " << ngram_k << std::endl;
     std::cout << "outfile: " << outfname << std::endl;
 
     int seed = 12;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
     Accuracy metric;
     // PerceptronFeatureHashing clf{9, 0.5};
-    NaiveBayesFeatureHashing clf(9,0.5);
+    NaiveBayesFeatureHashing clf(10,0.6);
     clf.ngram_k = ngram_k;
     auto metric_values = stream_emails(emails, clf, metric, window);
 
