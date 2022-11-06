@@ -6,6 +6,7 @@
 import sys
 import matplotlib.pyplot as plt
 
+
 def read_outfile(outfile):
     props = {}
     metric_values = []

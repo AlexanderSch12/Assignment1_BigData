@@ -40,8 +40,6 @@ public:
 
     void update_(const Email &email)
     {
-        // TODO implement this
-
         EmailIter iter = EmailIter(email, this->ngram_k);
         for (int i = 0; i < email.num_words(); i++)
         {
@@ -55,21 +53,20 @@ public:
                 num_ngram_ham++;
             }
         }
-        if(email.is_spam()) num_spam++;
+        if (email.is_spam()) num_spam++;
         else num_ham++;
     }
 
     double predict_(const Email &email) const
     {
-        // TODO implement this
-        double probSpam = prob(email,num_buckets_,num_ngram_spam,num_spam);
-        double probHam = prob(email,0,num_ngram_ham,num_ham);
+        double probSpam = prob(email, num_buckets_, num_ngram_spam, num_spam);
+        double probHam = prob(email, 0, num_ngram_ham, num_ham);
 
         double probability = probSpam - log(probSpam) + log1p(exp(log(probHam) - log(probSpam)));
         return probability;
     }
 
-    double prob(const Email &email,int offset,int num_ngram,int num_mail) const
+    double prob(const Email &email, int offset, int num_ngram, int num_mail) const
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
         double count = 0;

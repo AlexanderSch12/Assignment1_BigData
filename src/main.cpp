@@ -143,6 +143,7 @@ int main(int argc, char *argv[])
 
     std::cout << "classify(email1) = " << clf.classify(email1) << std::endl;
     std::cout << "classify(email2) = " << clf.classify(email2) << std::endl;
+    std::cout << "Accuracy: " << metric.get_accuracy() << std::endl;
 
     return 0;
 }
