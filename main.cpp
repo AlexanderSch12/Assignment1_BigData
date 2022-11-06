@@ -28,22 +28,21 @@ using std::chrono::steady_clock;
 using std::chrono::milliseconds;
 using std::chrono::duration_cast;
 
-void load_emails(std::vector<Email>& emails, const std::string& fname)
+void load_emails(std::vector<Email> &emails, const std::string &fname)
 {
     std::ifstream f(fname);
     if (!f.is_open())
     {
         std::cerr << "Failed to open file `" << fname << "`, skipping..." << std::endl;
-    }
-    else
+    } else
     {
         steady_clock::time_point begin = steady_clock::now();
         read_emails(f, emails);
         steady_clock::time_point end = steady_clock::now();
 
         std::cout << "Read " << fname << " in "
-            << (duration_cast<milliseconds>(end-begin).count()/1000.0)
-            << "s" << std::endl;
+                  << (duration_cast<milliseconds>(end - begin).count() / 1000.0)
+                  << "s" << std::endl;
     }
 }
 
@@ -71,22 +70,22 @@ std::vector<Email> load_emails(int seed)
  * metric is evaluated and the score is recorded. Use the results of this
  * function to plot your learning curves.
  */
-template <typename Clf, typename Metric>
+template<typename Clf, typename Metric>
 std::vector<double>
 stream_emails(const std::vector<Email> &emails,
-              Clf& clf, Metric& metric, int window)
+              Clf &clf, Metric &metric, int window)
 {
     std::vector<double> metric_values;
-    for (size_t i = 0; i < emails.size(); i+=window)
+    for (size_t i = 0; i < emails.size(); i += window)
     {
-        for (size_t u = 0; u < window && i+u < emails.size(); ++u)
-            metric.evaluate(clf, emails[i+u]);
+        for (size_t u = 0; u < window && i + u < emails.size(); ++u)
+            metric.evaluate(clf, emails[i + u]);
 
         double score = metric.get_score();
         metric_values.push_back(score);
 
-        for (size_t u = 0; u < window && i+u < emails.size(); ++u)
-            clf.update(emails[i+u]);
+        for (size_t u = 0; u < window && i + u < emails.size(); ++u)
+            clf.update(emails[i + u]);
     }
     return metric_values;
 }
@@ -125,7 +124,8 @@ int main(int argc, char *argv[])
     std::cout << "#emails: " << emails.size() << std::endl;
 
     Accuracy metric;
-    PerceptronFeatureHashing clf{9, 0.5};
+    // PerceptronFeatureHashing clf{9, 0.5};
+    NaiveBayesFeatureHashing clf(9,0.5);
     clf.ngram_k = ngram_k;
     auto metric_values = stream_emails(emails, clf, metric, window);
 
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
     outfile << "window=" << window << std::endl;
     outfile << "ngram_k=" << ngram_k << std::endl;
     outfile << "#emails=" << emails.size() << std::endl;
-    for (double metric_value : metric_values)
+    for (double metric_value: metric_values)
         outfile << metric_value << std::endl;
 
     // just for fun, evaluate a single email:
