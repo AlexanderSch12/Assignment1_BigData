@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 3.2)
+
 project(bdap-assignment1)
 
-set(SOURCE_FILES main.cpp)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O3")
 
-add_executable(bdap_assignment1 ${SOURCE_FILES})
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
+
+set(BDAP_ASSIGNMENT1_INSTALL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(BDAP_ASSIGNMENT1_INSTALL_BIN_DIR ${PROJECT_SOURCE_DIR}/bin)
+set(BDAP_ASSIGNMENT1_INSTALL_LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
+
+include_directories(${BDAP_ASSIGNMENT1_INSTALL_INCLUDE_DIR})
+
+add_subdirectory(src)
