@@ -1,4 +1,5 @@
 /cmake-build-debug-wsl/
-/cmake-build-debug/
 /build/
 /cmake-build-mingw/
+/output/
+/.idea/
