@@ -13,14 +13,13 @@ namespace bdap {
 class NaiveBayesFeatureHashing : public BaseClf<NaiveBayesFeatureHashing>
 {
     int log_num_buckets_;
-    std::vector<int> buckets_; // First num_buckets are ham, rest num_buckets is spam
+    std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
 
-    // TODO add fields here
     int num_buckets_;
-    int num_ngram_spam;
-    int num_ngram_ham;
-    int num_spam;
-    int num_ham;
+    double num_ngram_spam;
+    double num_ngram_ham;
+    double num_spam;
+    double num_ham;
     int seed_;
 
 public:
@@ -28,11 +27,11 @@ public:
             : log_num_buckets_(log_num_buckets), seed_(0x249cd), num_buckets_(1 << log_num_buckets),
               buckets_(2 * (1 << log_num_buckets), 1)
     {
-        // TODO initialize the data structures here
-        num_ngram_spam = 0;
-        num_ngram_ham = 0;
-        num_spam = 0;
-        num_ham = 0;
+        num_ngram_spam = 1;
+        num_ngram_ham = 1;
+        num_spam = 1;
+        num_ham = 1;
+
         // Initialized buckets_ with 1 (Laplace estimates)
 
         this->threshold = threshold;
@@ -41,20 +40,22 @@ public:
     void update_(const Email &email)
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
+        int offset;
+        if (email.is_spam())
+        {
+            num_spam++;
+            num_ngram_spam += iter.size();
+            offset = num_buckets_;
+        } else
+        {
+            num_ham++;
+            num_ngram_ham += iter.size();
+            offset = 0;
+        }
         while (iter)
         {
-            if (email.is_spam())
-            {
-                buckets_[num_buckets_ + get_bucket(iter.next())]++;
-                num_ngram_spam++;
-            } else
-            {
-                buckets_[get_bucket(iter.next())]++;
-                num_ngram_ham++;
-            }
+            buckets_[offset + get_bucket(iter.next())]++;
         }
-        if (email.is_spam()) num_spam++;
-        else num_ham++;
     }
 
     double predict_(const Email &email) const
@@ -62,22 +63,20 @@ public:
         double probSpam = prob(email, num_buckets_, num_ngram_spam, num_spam);
         double probHam = prob(email, 0, num_ngram_ham, num_ham);
 
-        double probability = probSpam - log(probSpam) + log1p(exp(log(probHam) - log(probSpam)));
-        return probability;
+        double probability = probSpam - (probSpam + std::log1p(exp(probHam - probSpam)));
+        return std::exp(probability);
     }
 
-    double prob(const Email &email, int offset, int num_ngram, int num_mail) const
+    double prob(const Email &email, int offset, double num_ngram, double num_mail) const
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
         double count = 0;
         while (iter)
         {
-            count += log(buckets_[offset + get_bucket(iter.next())]);
+            count += (std::log(buckets_[offset + get_bucket(iter.next())]));
         }
-        count -= email.num_words() * log(num_ngram);
-
-        count += num_mail - (log(num_ham) + log1p(exp(log(num_spam) - log(num_ham))));
-
+        count -= (iter.size() * log(num_ngram));
+        count += (std::log(num_mail) - (std::log(num_ham) + log1p(exp(std::log(num_spam) - std::log(num_ham)))));
         return count;
     }
 
