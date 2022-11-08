@@ -1,5 +1,0 @@
-C:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug/src/CMakeFiles/bdap_assignment1.dir
-C:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug/src/CMakeFiles/edit_cache.dir
-C:/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/cmake-build-debug/src/CMakeFiles/rebuild_cache.dir
