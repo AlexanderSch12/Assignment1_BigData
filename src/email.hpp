@@ -23,9 +23,9 @@ class Email {
 
 public:
     Email(const std::string& header, const std::string& body)
-        : header_(header)
-        , body_(body)
-        , words_{}
+            : header_(header)
+            , body_(body)
+            , words_{}
     {
         // find start indices of words in body
         size_t prev = 0;
@@ -75,39 +75,39 @@ class EmailIter {
     int i_;
 
 public:
-  EmailIter(const Email &email, int ngram_k)
-      : ngram_k_(ngram_k), email_(email), k_{1}, i_{0}
-  {
-      int num_words = static_cast<int>(email.num_words());
-      if (num_words < ngram_k_)
-          ngram_k_ = num_words;
-  }
+    EmailIter(const Email &email, int ngram_k)
+            : ngram_k_(ngram_k), email_(email), k_{1}, i_{0}
+    {
+        int num_words = static_cast<int>(email.num_words());
+        if (num_words < ngram_k_)
+            ngram_k_ = num_words;
+    }
 
-  operator bool() const
-  { return !is_done(); }
+    operator bool() const
+    { return !is_done(); }
 
-  bool is_done() const
-  { return k_ > ngram_k_; }
+    bool is_done() const
+    { return k_ > ngram_k_; }
 
-  std::string_view next()
-  {
-      auto out = email_.get_ngram(i_, k_);
-      ++i_;
-      if (i_ + k_ - 1 == email_.num_words())
-      {
-          i_ = 0;
-          ++k_;
-      }
-      return out;
-  }
+    std::string_view next()
+    {
+        auto out = email_.get_ngram(i_, k_);
+        ++i_;
+        if (i_ + k_ - 1 == email_.num_words())
+        {
+            i_ = 0;
+            ++k_;
+        }
+        return out;
+    }
 
-  size_t size() const
-  {
-      size_t s = 0;
-      for (int k = 0; k < ngram_k_; ++k)
-          s += email_.num_words() - k;
-      return s;
-  }
+    size_t size() const
+    {
+        size_t s = 0;
+        for (int k = 0; k < ngram_k_; ++k)
+            s += email_.num_words() - k;
+        return s;
+    }
 };
 
 void read_emails(std::ifstream& f, std::vector<Email>& emails)
@@ -135,7 +135,7 @@ void read_emails(std::ifstream& f, std::vector<Email>& emails)
             emails.emplace_back(header, body);
             header.clear();
         }
-        // header starting with `EMAIL> ` with path to email file
+            // header starting with `EMAIL> ` with path to email file
         else if (line.find("EMAIL> ", 0) == 0)
             std::swap(header, line);
         else

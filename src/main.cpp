@@ -40,9 +40,9 @@ void load_emails(std::vector<Email> &emails, const std::string &fname)
         read_emails(f, emails);
         steady_clock::time_point end = steady_clock::now();
 
-//        std::cout << "Read " << fname << " in "
-//                  << (duration_cast<milliseconds>(end - begin).count() / 1000.0)
-//                  << "s" << std::endl;
+        std::cout << "Read " << fname << " in "
+                  << (duration_cast<milliseconds>(end - begin).count() / 1000.0)
+                  << "s" << std::endl;
     }
 }
 
@@ -54,18 +54,18 @@ std::vector<Email> load_emails(int seed)
     // Data can be found on the departmental computers in /cw/bdap/assignment1
 
     // Windows
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
 
     // Linux
-//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
-//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
-//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
-//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
-//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
+    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
+    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
+    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
+    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
+    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Shuffle the emails
     std::default_random_engine g(seed);
@@ -85,6 +85,7 @@ stream_emails(const std::vector<Email> &emails,
               Clf &clf, Metric &metric, int window)
 {
     std::vector<double> metric_values;
+    std::cout << emails.size() << std::endl;
     for (size_t i = 0; i < emails.size(); i += window)
     {
         for (size_t u = 0; u < window && i + u < emails.size(); ++u)
@@ -130,13 +131,13 @@ int main(int argc, char *argv[])
 
     int seed = 12;
     std::vector<Email> emails = load_emails(seed);
-    //std::cout << "#emails: " << emails.size() << std::endl;
+//    std::cout << "#emails: " << emails.size() << std::endl;
 
     Accuracy accuracy;
     Precision precision;
     Recall recall;
-    // NaiveBayesFeatureHashing clf(10,0.55);
-    PerceptronFeatureHashing clf(10,0.5);
+    NaiveBayesFeatureHashing clf(10,0.55);
+    //PerceptronFeatureHashing clf(10,0.5);
     clf.ngram_k = ngram_k;
     auto accuracy_values = stream_emails(emails, clf, accuracy, window);
 

@@ -56,6 +56,7 @@ public:
         {
             buckets_[offset + get_bucket(iter.next())]++;
         }
+        std::cout << "update" << std::endl;
     }
 
     double predict_(const Email &email) const
@@ -64,6 +65,7 @@ public:
         double probHam = prob(email, 0, num_ngram_ham, num_ham);
 
         double probability = probSpam - (probSpam + std::log1p(exp(probHam - probSpam)));
+        std::cout << "predict" << std::endl;
         return std::exp(probability);
     }
 
