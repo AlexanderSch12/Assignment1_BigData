@@ -134,22 +134,33 @@ int main(int argc, char *argv[])
 //    std::cout << "#emails: " << emails.size() << std::endl;
 
     Accuracy accuracy;
-    Precision precision;
-    Recall recall;
-    NaiveBayesFeatureHashing clf(10,0.55);
-    //PerceptronFeatureHashing clf(10,0.5);
-    clf.ngram_k = ngram_k;
-    auto accuracy_values = stream_emails(emails, clf, accuracy, window);
-
-
-    // write out the results
     std::ofstream outfile{outfname};
-    outfile << "window=" << window << std::endl;
-    outfile << "ngram_k=" << ngram_k << std::endl;
-    outfile << "#emails=" << emails.size() << std::endl;
-//    for (double metric_value: accuracy_values)
-//        outfile << metric_value << std::endl;
+    for(int ngram = 1 ; ngram < 7 ; ngram++)
+    {
+        for(int win = 10 ; win < 161 ; win += 25)
+        {
+            for(int buckets = 5 ; buckets < 21 ; buckets += 5)
+            {
+                for(double thresh = 0.5 ; thresh < 0.9 ; thresh +=0.1)
+                {
+                    NaiveBayesFeatureHashing clf(buckets,thresh);
+                    //PerceptronFeatureHashing clf(buckets,0.15);
+//                    clf.ngram_k = ngram;
+//                    auto accuracy_values = stream_emails(emails, clf, accuracy, win);
+//
+//                    outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
+//                    outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+//                    outfile << "Precision = " << accuracy.get_precision() << std::endl;
+//                    outfile << "Recall = " << accuracy.get_recall() << std::endl;
 
+//                    std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
+//                    std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+//                    std::cout << "Precision = " << accuracy.get_precision() << std::endl;
+//                    std::cout << "Recall = " << accuracy.get_recall() << std::endl;
+                }
+            }
+        }
+    }
 
     std::cout << "Accuracy: " << accuracy.get_accuracy() << std::endl;
     std::cout << "Precision: " << accuracy.get_precision() << std::endl;
