@@ -132,13 +132,13 @@ int main(int argc, char *argv[])
         return 3;
     }
 
-//    std::cout << "window:  " << window << std::endl;
-//    std::cout << "ngram_k: " << ngram_k << std::endl;
-//    std::cout << "outfile: " << outfname << std::endl;
-
     int seed = 12;
     std::vector<Email> emails = load_emails(seed);
-//    std::cout << "#emails: " << emails.size() << std::endl;
+
+    int max = 0;
+    int max_acc, max_prec, max_rec;
+    int best_ngram, best_window, best_buckets;
+    double best_thresh;
 
     Accuracy accuracy;
     std::ofstream outfile{outfname};
@@ -152,25 +152,38 @@ int main(int argc, char *argv[])
                 {
                     NaiveBayesFeatureHashing clf(buckets,thresh);
                     //PerceptronFeatureHashing clf(buckets,0.15);
-//                    clf.ngram_k = ngram;
-//                    auto accuracy_values = stream_emails(emails, clf, accuracy, win);
-//
-//                    outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
-//                    outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
-//                    outfile << "Precision = " << accuracy.get_precision() << std::endl;
-//                    outfile << "Recall = " << accuracy.get_recall() << std::endl;
+                    clf.ngram_k = ngram;
+                    auto accuracy_values = stream_emails(emails, clf, accuracy, win);
 
-//                    std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
-//                    std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
-//                    std::cout << "Precision = " << accuracy.get_precision() << std::endl;
-//                    std::cout << "Recall = " << accuracy.get_recall() << std::endl;
+                    outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
+                    outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+                    outfile << "Precision = " << accuracy.get_precision() << std::endl;
+                    outfile << "Recall = " << accuracy.get_recall() << std::endl;
+
+                    std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
+                    std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+                    std::cout << "Precision = " << accuracy.get_precision() << std::endl;
+                    std::cout << "Recall = " << accuracy.get_recall() << std::endl;
+
+                    int new_max = accuracy.get_accuracy() + accuracy.get_precision() + accuracy.get_recall();
+                    if( max < new_max)
+                    {
+                        max = new_max;
+                        max_acc = accuracy.get_accuracy();
+                        max_prec = accuracy.get_precision();
+                        max_rec = accuracy.get_recall();
+                        best_ngram = ngram;
+                        best_window = win;
+                        best_buckets = buckets;
+                        best_thresh = thresh;
+                    }
                 }
             }
         }
     }
-
-    std::cout << "Accuracy: " << accuracy.get_accuracy() << std::endl;
-    std::cout << "Precision: " << accuracy.get_precision() << std::endl;
-    std::cout << "Recall: " << accuracy.get_recall() << std::endl;
+    outfile << "############## Best: " << "ngram: " << best_ngram << " buckets: " << best_buckets << " best_window: " << best_window << " best_threshold: " << best_thresh <<"##############" << std::endl;
+    outfile << "Accuracy: " << max_acc << std::endl;
+    outfile << "Precision: " << max_prec << std::endl;
+    outfile << "Recall: " << max_rec << std::endl;
     return 0;
 }
