@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 
     Accuracy accuracy;
     std::ofstream outfile{outfname};
-    for(int ngram = 1 ; ngram < 7 ; ngram++)
+    for(int ngram = 1 ; ngram < 8 ; ngram++)
     {
         for(int win = 10 ; win < 161 ; win += 25)
         {
