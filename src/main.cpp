@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
     std::vector<Email> emails = load_emails(seed);
 
     double max = 0.0;
-    int max_acc, max_prec, max_rec;
+    double max_acc, max_prec, max_rec;
     int best_ngram, best_window, best_buckets;
     double best_thresh;
 
