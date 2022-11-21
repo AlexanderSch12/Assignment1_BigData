@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
     int seed = 12;
     std::vector<Email> emails = load_emails(seed);
 
-    int max = 0;
+    double max = 0.0;
     int max_acc, max_prec, max_rec;
     int best_ngram, best_window, best_buckets;
     double best_thresh;
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
                     std::cout << "Precision = " << accuracy.get_precision() << std::endl;
                     std::cout << "Recall = " << accuracy.get_recall() << std::endl;
 
-                    int new_max = accuracy.get_accuracy() + accuracy.get_precision() + accuracy.get_recall();
+                    double new_max = accuracy.get_accuracy() + accuracy.get_precision() + accuracy.get_recall();
                     if( max < new_max)
                     {
                         max = new_max;
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    outfile << "############## Best: " << "ngram: " << best_ngram << " buckets: " << best_buckets << " best_window: " << best_window << " best_threshold: " << best_thresh <<"##############" << std::endl;
+    outfile << "############## Best: " << "ngram: " << best_ngram << " | buckets: " << best_buckets << " | best_window: " << best_window << " | best_threshold: " << best_thresh << " ##############" << std::endl;
     outfile << "Accuracy: " << max_acc << std::endl;
     outfile << "Precision: " << max_prec << std::endl;
     outfile << "Recall: " << max_rec << std::endl;
