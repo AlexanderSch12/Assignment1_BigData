@@ -10,21 +10,73 @@
 namespace bdap {
 
 class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin> {
-    // TODO add private fields here
+    int log_num_buckets_;
+    std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
+    std::vector<std::tuple<int,int>> hash_funcs_;
+    int num_buckets_;
+    double num_ngram_spam;
+    double num_ngram_ham;
+    double num_spam;
+    double num_ham;
+    int num_hashes_;
 
 public:
-    // TODO initialize your fields in the constructor
-    NaiveBayesCountMin(int num_hashes, int log_num_buckets, double threshold) {}
+    NaiveBayesCountMin(int num_hashes, int log_num_buckets, double threshold)
+    : log_num_buckets_(log_num_buckets), num_buckets_(1 << log_num_buckets),
+    num_hashes_(num_hashes)
+    {
+        buckets_.resize(2*num_hashes_*num_buckets_,1);
+        int p = 1;
+        for(int i = 0 ; i<num_hashes_ ; i++)
+        {
+            int a = rand() % (p-1);
+            int b = rand() % (p-1);
+            hash_funcs_.emplace_back(a,b);
+        }
+        num_ngram_spam = 1;
+        num_ngram_ham = 1;
+        num_spam = 1;
+        num_ham = 1;
+        this->threshold = threshold;
+    }
 
     void update_(const Email &email)
     {
-        // TODO implement this
+        EmailIter iter = EmailIter(email, this->ngram_k);
+        int offset;
+        if (email.is_spam())
+        {
+            num_spam++;
+            num_ngram_spam += iter.size();
+            offset = num_hashes_*num_buckets_;
+        } else
+        {
+            num_ham++;
+            num_ngram_ham += iter.size();
+            offset = 0;
+        }
+        while (iter)
+        {
+            for(int i = 0 ; i<num_hashes_ ; i++)
+            {
+                buckets_[offset + i*num_buckets_ + get_bucket(iter.next())]++;
+            }
+        }
     }
 
     double predict_(const Email& email) const
     {
         // TODO implement this
         return 0.0;
+    }
+private:
+    size_t get_bucket(std::string_view ngram) const
+    { return get_bucket(hash(ngram, seed_)); }
+
+    size_t get_bucket(size_t hash) const
+    {
+        hash = hash % num_buckets_;
+        return hash;
     }
 };
 
