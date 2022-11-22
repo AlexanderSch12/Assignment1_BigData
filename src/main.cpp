@@ -92,7 +92,7 @@ stream_emails(const std::vector<Email> &emails,
               Clf &clf, Metric &metric, int window)
 {
     std::vector<double> metric_values;
-    std::cout << emails.size() << std::endl;
+    //std::cout << emails.size() << std::endl;
     for (size_t i = 0; i < emails.size(); i += window)
     {
         for (size_t u = 0; u < window && i + u < emails.size(); ++u)
