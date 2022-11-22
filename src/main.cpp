@@ -233,6 +233,11 @@ int main(int argc, char *argv[])
                         buckets_rec = buckets;
                         thresh_rec = thresh;
                     }
+                    std::cout << max_acc2 << std::endl;
+                    std::cout << max_acc3 << std::endl;
+                    std::cout << best_rec << std::endl;
+                    std::cout << best_prec << std::endl;
+                    std::cout << best_acc << std::endl;
                 }
             }
         }
