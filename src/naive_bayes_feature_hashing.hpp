@@ -63,20 +63,38 @@ public:
         double probSpam = prob(email, num_buckets_, num_ngram_spam, num_spam);
         double probHam = prob(email, 0, num_ngram_ham, num_ham);
 
+        // http://www.cs.cmu.edu/~tom/mlbook/NBayesLogReg.pdf
+        //                      P(Y=1)P(X|Y=1)
+        // P(Y=1|X) = ---------------------------------
+        //              P(Y=1)P(X|Y=1) + P(Y=0)P(X|Y=0)
         double probability = probSpam - (probSpam + std::log1p(exp(probHam - probSpam)));
         return std::exp(probability);
     }
 
     // https://www.atoti.io/articles/how-to-solve-the-zero-frequency-problem-in-naive-bayes/
+    //     P(S)        P(X1|S)         P(X2|S)         P(Xn|S)
+    // log ---- + log --------- + log --------- + log --------- = prob(Spam) - prob(Ham)
+    //     P(H)        P(X1|H)         P(X2|H)         P(Xn|H)
+
     double prob(const Email &email, int offset, double num_ngram, double num_mail) const
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
+
+        // count = log|X1| + log|X2| + log|Xn|
         double count = 0;
         while (iter)
         {
             count += (std::log(buckets_[offset + get_bucket(iter.next())]));
         }
+        // count = (log|X1| + log|X2| + log|Xn|) - log(|S_ngrams| or |Hn_grams|)*n
+        //                       |X1|                         |Xn|
+        // count = log ------------------------ + log ------------------------
+        //             |S_ngrams| or |H_ngrams|       |S_ngrams| or |H_ngrams|
         count -= (iter.size() * log(num_ngram));
+
+        //                       |X1|                         |Xn|                         |S or H|
+        // count = log ------------------------ + log ------------------------ + log ------------------------
+        //             |S_ngrams| or |H_ngrams|       |S_ngrams| or |H_ngrams|             |Total|
         count += (std::log(num_mail) - (std::log(num_ham) + log1p(exp(std::log(num_spam) - std::log(num_ham)))));
         return count;
     }
