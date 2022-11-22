@@ -151,11 +151,11 @@ int main(int argc, char *argv[])
 
     Accuracy accuracy;
     std::ofstream outfile{outfname};
-    for (int ngram = 1; ngram < 8; ngram++)
+    for (int ngram = 1; ngram < 10; ngram++)
     {
         for (int win = 10; win < 161; win += 25)
         {
-            for (int buckets = 5; buckets < 21; buckets += 5)
+            for (int buckets = 5; buckets < 36; buckets += 5)
             {
                 for (double thresh = 0.15; thresh < 1.0; thresh += 0.1)
                 {
