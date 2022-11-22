@@ -67,6 +67,7 @@ public:
         return std::exp(probability);
     }
 
+    // https://www.atoti.io/articles/how-to-solve-the-zero-frequency-problem-in-naive-bayes/
     double prob(const Email &email, int offset, double num_ngram, double num_mail) const
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
