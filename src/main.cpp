@@ -159,8 +159,8 @@ int main(int argc, char *argv[])
             {
                 for (double thresh = 0.5; thresh < 0.9; thresh += 0.1)
                 {
-                    NaiveBayesFeatureHashing clf(buckets, thresh);
-                    //PerceptronFeatureHashing clf(buckets,0.15);
+                    // NaiveBayesFeatureHashing clf(buckets, thresh);
+                    PerceptronFeatureHashing clf(buckets,0.15);
                     clf.ngram_k = ngram;
                     auto accuracy_values = stream_emails(emails, clf, accuracy, win);
 
