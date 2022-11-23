@@ -75,7 +75,6 @@ public:
     //     P(S)        P(X1|S)         P(X2|S)         P(Xn|S)
     // log ---- + log --------- + log --------- + log --------- = prob(Spam) - prob(Ham)
     //     P(H)        P(X1|H)         P(X2|H)         P(Xn|H)
-
     double prob(const Email &email, int offset, double num_ngram, double num_mail) const
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
@@ -92,9 +91,9 @@ public:
         //             |S_ngrams| or |H_ngrams|       |S_ngrams| or |H_ngrams|
         count -= (iter.size() * log(num_ngram));
 
-        //                       |X1|                         |Xn|                         |S or H|
+        //                       |X1|                         |Xn|                         |S or H mails|
         // count = log ------------------------ + log ------------------------ + log ------------------------
-        //             |S_ngrams| or |H_ngrams|       |S_ngrams| or |H_ngrams|             |Total|
+        //             |S_ngrams| or |H_ngrams|       |S_ngrams| or |H_ngrams|             |Total mails|
         count += (std::log(num_mail) - (std::log(num_ham) + log1p(exp(std::log(num_spam) - std::log(num_ham)))));
         return count;
     }
