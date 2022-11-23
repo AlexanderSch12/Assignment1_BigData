@@ -12,7 +12,7 @@ namespace bdap {
 class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin> {
     int log_num_buckets_;
     std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
-    std::vector<std::tuple<int,int>> hash_funcs_;
+    std::vector<int> seeds_;
     int num_buckets_;
     double num_ngram_spam;
     double num_ngram_ham;
@@ -27,7 +27,12 @@ public:
     num_hashes_(num_hashes)
     {
         buckets_.resize(2*num_hashes_*num_buckets_,1);
+        seeds_.resize(num_hashes_);
 
+        for(int i = 0 ; i<num_hashes_ ; i++)
+        {
+            seeds_[i] = 0x9748cd * i;
+        }
         num_ngram_spam = 1;
         num_ngram_ham = 1;
         num_spam = 1;
@@ -52,9 +57,10 @@ public:
         }
         while (iter)
         {
+            auto next = iter.next();
             for(int i = 0 ; i<num_hashes_ ; i++)
             {
-                //buckets_[offset + i*num_buckets_ + get_bucket(iter.next())]++;
+                buckets_[offset + i*num_buckets_ + get_bucket(next,seeds_[i])]++;
             }
         }
     }
@@ -64,15 +70,15 @@ public:
         // TODO implement this
         return 0.0;
     }
-//private:
-//    size_t get_bucket(std::string_view ngram) const
-//    { return get_bucket(hash(ngram, seed_)); }
-//
-//    size_t get_bucket(size_t hash) const
-//    {
-//        hash = hash % num_buckets_;
-//        return hash;
-//    }
+private:
+    size_t get_bucket(std::string_view ngram,int seed) const
+    { return get_bucket(hash(ngram, seed)); }
+
+    size_t get_bucket(size_t hash) const
+    {
+        hash = hash % num_buckets_;
+        return hash;
+    }
 };
 
 } // namespace bdap
