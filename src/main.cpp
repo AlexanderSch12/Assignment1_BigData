@@ -54,18 +54,22 @@ std::vector<Email> load_emails(int seed)
     // Data can be found on the departmental computers in /cw/bdap/assignment1
 
     // Windows
-//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
-//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
-//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
-//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
-//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
+    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
 
     // Linux
-    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
-    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
-    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
-    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
-    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
+//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
+//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
+//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
+//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
+//    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Remote
 //   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
@@ -142,46 +146,53 @@ int main(int argc, char *argv[])
 
     Accuracy accuracy;
     std::ofstream outfile{outfname};
-    for(int ngram = 1 ; ngram < 8 ; ngram++)
+    for (int ngram = 1; ngram < 8; ngram++)
     {
-        for(int win = 10 ; win < 161 ; win += 25)
+        for (int win = 10; win < 161; win += 25)
         {
-            for(int buckets = 5 ; buckets < 21 ; buckets += 5)
+            for (int buckets = 5; buckets < 21; buckets += 5)
             {
-                for(double thresh = 0.5 ; thresh < 0.9 ; thresh +=0.1)
+                for (double thresh = 0.5; thresh < 0.9; thresh += 0.1)
                 {
-                    NaiveBayesFeatureHashing clf(buckets,thresh);
-                    //PerceptronFeatureHashing clf(buckets,0.15);
-                    clf.ngram_k = ngram;
-                    auto accuracy_values = stream_emails(emails, clf, accuracy, win);
-
-                    outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
-                    outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
-                    outfile << "Precision = " << accuracy.get_precision() << std::endl;
-                    outfile << "Recall = " << accuracy.get_recall() << std::endl;
-
-                    std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets << " threshold: " << thresh << " ---------" << std::endl;
-                    std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
-                    std::cout << "Precision = " << accuracy.get_precision() << std::endl;
-                    std::cout << "Recall = " << accuracy.get_recall() << std::endl;
-
-                    int new_max = accuracy.get_accuracy() + accuracy.get_precision() + accuracy.get_recall();
-                    if( max < new_max)
+                    for (int hash = 2; hash < 11; hash += 4)
                     {
-                        max = new_max;
-                        max_acc = accuracy.get_accuracy();
-                        max_prec = accuracy.get_precision();
-                        max_rec = accuracy.get_recall();
-                        best_ngram = ngram;
-                        best_window = win;
-                        best_buckets = buckets;
-                        best_thresh = thresh;
+                        //NaiveBayesFeatureHashing clf(buckets,thresh);
+                        //PerceptronFeatureHashing clf(buckets,0.15);
+                        NaiveBayesCountMin clf(10, buckets, thresh);
+                        clf.ngram_k = ngram;
+                        auto accuracy_values = stream_emails(emails, clf, accuracy, 20);
+
+                        outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
+                                << " threshold: " << thresh << " ---------" << std::endl;
+                        outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+                        outfile << "Precision = " << accuracy.get_precision() << std::endl;
+                        outfile << "Recall = " << accuracy.get_recall() << std::endl;
+
+                        std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
+                                  << " threshold: " << thresh << " ---------" << std::endl;
+                        std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+                        std::cout << "Precision = " << accuracy.get_precision() << std::endl;
+                        std::cout << "Recall = " << accuracy.get_recall() << std::endl;
+
+                        int new_max = accuracy.get_accuracy() + accuracy.get_precision() + accuracy.get_recall();
+                        if (max < new_max)
+                        {
+                            max = new_max;
+                            max_acc = accuracy.get_accuracy();
+                            max_prec = accuracy.get_precision();
+                            max_rec = accuracy.get_recall();
+                            best_ngram = ngram;
+                            best_window = win;
+                            best_buckets = buckets;
+                            best_thresh = thresh;
+                        }
                     }
                 }
             }
         }
     }
-    outfile << "############## Best: " << "ngram: " << best_ngram << " buckets: " << best_buckets << " best_window: " << best_window << " best_threshold: " << best_thresh <<"##############" << std::endl;
+    outfile << "############## Best: " << "ngram: " << best_ngram << " buckets: " << best_buckets << " best_window: "
+            << best_window << " best_threshold: " << best_thresh << "##############" << std::endl;
     outfile << "Accuracy: " << max_acc << std::endl;
     outfile << "Precision: " << max_prec << std::endl;
     outfile << "Recall: " << max_rec << std::endl;

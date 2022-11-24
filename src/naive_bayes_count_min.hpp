@@ -14,24 +14,26 @@ class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin> {
     std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
     std::vector<int> seeds_;
     int num_buckets_;
-    double num_ngram_spam;
-    double num_ngram_ham;
-    double num_spam;
-    double num_ham;
+    int num_ngram_spam;
+    int num_ngram_ham;
+    int num_spam;
+    int num_ham;
     int num_hashes_;
+    int offset_;
     // For different hash functions, the seed can be changed
 
 public:
     NaiveBayesCountMin(int num_hashes, int log_num_buckets, double threshold)
     : log_num_buckets_(log_num_buckets), num_buckets_(1 << log_num_buckets),
-    num_hashes_(num_hashes)
+    num_hashes_(num_hashes), offset_(num_hashes_*num_buckets_)
     {
-        buckets_.resize(2*num_hashes_*num_buckets_,1);
+        buckets_.resize(2*offset_,1);
         seeds_.resize(num_hashes_);
 
-        for(int i = 0 ; i<num_hashes_ ; i++)
+        seeds_[0] = 0x9748cd;
+        for(int i = 1 ; i<num_hashes_ ; i++)
         {
-            seeds_[i] = 0x9748cd * i;
+            seeds_[i] = seeds_[i-1] * i;
         }
         num_ngram_spam = 1;
         num_ngram_ham = 1;
@@ -43,16 +45,17 @@ public:
     void update_(const Email &email)
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
+        size_t size = iter.size();
         int offset;
         if (email.is_spam())
         {
             num_spam++;
-            num_ngram_spam += iter.size();
-            offset = num_hashes_*num_buckets_;
+            num_ngram_spam += size;
+            offset = offset_;
         } else
         {
             num_ham++;
-            num_ngram_ham += iter.size();
+            num_ngram_ham += size;
             offset = 0;
         }
         while (iter)
@@ -67,7 +70,7 @@ public:
 
     double predict_(const Email &email) const
     {
-        double probSpam = prob(email, num_buckets_, num_ngram_spam, num_spam);
+        double probSpam = prob(email, offset_, num_ngram_spam, num_spam);
         double probHam = prob(email, 0, num_ngram_ham, num_ham);
 
         // http://www.cs.cmu.edu/~tom/mlbook/NBayesLogReg.pdf
@@ -91,7 +94,7 @@ public:
             for(int i=1 ; i<num_hashes_ ; i++)
             {
                 // Find min
-                int current_value = buckets_[offset + i*num_buckets_ + get_bucket(next,seeds_[i])];
+                double current_value = buckets_[offset + i*num_buckets_ + get_bucket(next,seeds_[i])];
                 if(current_value < min)
                 {
                     min = current_value;
