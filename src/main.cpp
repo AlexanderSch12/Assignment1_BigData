@@ -151,92 +151,92 @@ int main(int argc, char *argv[])
 
     Accuracy accuracy;
     std::ofstream outfile{outfname};
-    for (int ngram = 1; ngram < 10; ngram++)
-    {
-        for (int win = 10; win < 161; win += 25)
-        {
-            for (int buckets = 5; buckets < 29; buckets += 5)
-            {
-                for (double thresh = 0.5; thresh < 0.9; thresh += 0.1)
-                {
-                    NaiveBayesFeatureHashing clf(30, thresh);
+//    for (int ngram = 1; ngram < 10; ngram++)
+//    {
+//        for (int win = 10; win < 161; win += 25)
+//        {
+//            for (int buckets = 5; buckets < 29; buckets += 5)
+//            {
+//                for (double thresh = 0.5; thresh < 0.9; thresh += 0.1)
+//                {
+                    NaiveBayesFeatureHashing clf(30, 0.5);
                     //PerceptronFeatureHashing clf(buckets,0.15);
-                    clf.ngram_k = ngram;
-                    auto accuracy_values = stream_emails(emails, clf, accuracy, win);
+                    clf.ngram_k = 1;
+                    auto accuracy_values = stream_emails(emails, clf, accuracy, 10);
 
-                    outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
-                            << " threshold: " << thresh << " ---------" << std::endl;
-                    outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
-                    outfile << "Precision = " << accuracy.get_precision() << std::endl;
-                    outfile << "Recall = " << accuracy.get_recall() << std::endl;
+//                    outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
+//                            << " threshold: " << thresh << " ---------" << std::endl;
+//                    outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+//                    outfile << "Precision = " << accuracy.get_precision() << std::endl;
+//                    outfile << "Recall = " << accuracy.get_recall() << std::endl;
+//
+//                    std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
+//                              << " threshold: " << thresh << " ---------" << std::endl;
+//                    std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
+//                    std::cout << "Precision = " << accuracy.get_precision() << std::endl;
+//                    std::cout << "Recall = " << accuracy.get_recall() << std::endl;
+//
+//                    double acc = accuracy.get_accuracy();
+//                    double prec = accuracy.get_precision();
+//                    double rec = accuracy.get_recall();
 
-                    std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
-                              << " threshold: " << thresh << " ---------" << std::endl;
-                    std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
-                    std::cout << "Precision = " << accuracy.get_precision() << std::endl;
-                    std::cout << "Recall = " << accuracy.get_recall() << std::endl;
-
-                    double acc = accuracy.get_accuracy();
-                    double prec = accuracy.get_precision();
-                    double rec = accuracy.get_recall();
-
-                    double new_max = acc + rec + rec;
-                    if (max < new_max)
-                    {
-                        max_acc3 = max_acc2;
-                        max_prec3 = max_prec2;
-                        max_rec3 = max_rec2;
-                        best_ngram3 = best_ngram2;
-                        best_window3 = best_window2;
-                        best_buckets3 = best_buckets2;
-                        best_thresh3 = best_thresh2;
-
-                        max_acc2 = max_acc;
-                        max_prec2 = max_prec;
-                        max_rec2 = max_rec;
-                        best_ngram2 = best_ngram;
-                        best_window2 = best_window;
-                        best_buckets2 = best_buckets;
-                        best_thresh2 = best_thresh;
-
-                        max = new_max;
-                        max_acc = acc;
-                        max_prec = prec;
-                        max_rec = rec;
-                        best_ngram = ngram;
-                        best_window = win;
-                        best_buckets = buckets;
-                        best_thresh = thresh;
-                    }
-
-                    if (best_acc < acc)
-                    {
-                        best_acc = acc;
-                        ngram_acc = ngram;
-                        window_acc = win;
-                        buckets_acc = buckets;
-                        thresh_acc = thresh;
-                    }
-                    if (best_prec < prec)
-                    {
-                        best_prec = prec;
-                        ngram_prec = ngram;
-                        window_prec = win;
-                        buckets_prec = buckets;
-                        thresh_prec = thresh;
-                    }
-                    if (best_rec < rec)
-                    {
-                        best_rec = rec;
-                        ngram_rec = ngram;
-                        window_rec = win;
-                        buckets_rec = buckets;
-                        thresh_rec = thresh;
-                    }
-                }
-            }
-        }
-    }
+//                    double new_max = acc + rec + rec;
+//                    if (max < new_max)
+//                    {
+//                        max_acc3 = max_acc2;
+//                        max_prec3 = max_prec2;
+//                        max_rec3 = max_rec2;
+//                        best_ngram3 = best_ngram2;
+//                        best_window3 = best_window2;
+//                        best_buckets3 = best_buckets2;
+//                        best_thresh3 = best_thresh2;
+//
+//                        max_acc2 = max_acc;
+//                        max_prec2 = max_prec;
+//                        max_rec2 = max_rec;
+//                        best_ngram2 = best_ngram;
+//                        best_window2 = best_window;
+//                        best_buckets2 = best_buckets;
+//                        best_thresh2 = best_thresh;
+//
+//                        max = new_max;
+//                        max_acc = acc;
+//                        max_prec = prec;
+//                        max_rec = rec;
+//                        best_ngram = ngram;
+//                        best_window = win;
+//                        best_buckets = buckets;
+//                        best_thresh = thresh;
+//                    }
+//
+//                    if (best_acc < acc)
+//                    {
+//                        best_acc = acc;
+//                        ngram_acc = ngram;
+//                        window_acc = win;
+//                        buckets_acc = buckets;
+//                        thresh_acc = thresh;
+//                    }
+//                    if (best_prec < prec)
+//                    {
+//                        best_prec = prec;
+//                        ngram_prec = ngram;
+//                        window_prec = win;
+//                        buckets_prec = buckets;
+//                        thresh_prec = thresh;
+//                    }
+//                    if (best_rec < rec)
+//                    {
+//                        best_rec = rec;
+//                        ngram_rec = ngram;
+//                        window_rec = win;
+//                        buckets_rec = buckets;
+//                        thresh_rec = thresh;
+//                    }
+//                }
+//            }
+//        }
+//    }
     outfile << std::endl;
     outfile << "############## Best: " << "ngram: " << best_ngram << " | buckets: " << best_buckets
             << " | window: " << best_window << " | threshold: " << best_thresh << " ##############"
