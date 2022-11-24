@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     {
         for (int win = 10; win < 161; win += 25)
         {
-            for (int buckets = 5; buckets < 30; buckets += 5)
+            for (int buckets = 5; buckets < 29; buckets += 5)
             {
                 for (double thresh = 0.5; thresh < 0.9; thresh += 0.1)
                 {
