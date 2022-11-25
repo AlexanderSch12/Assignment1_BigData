@@ -158,6 +158,8 @@ int main(int argc, char *argv[])
                     {
                         //NaiveBayesFeatureHashing clf(buckets,thresh);
                         //PerceptronFeatureHashing clf(buckets,0.15);
+
+                        // TODO: logBuckets cannot be big for vector, log 30 is too big for bayes hashing because *2
                         NaiveBayesCountMin clf(10, buckets, thresh);
                         clf.ngram_k = ngram;
                         auto accuracy_values = stream_emails(emails, clf, accuracy, 20);
