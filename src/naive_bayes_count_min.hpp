@@ -9,7 +9,8 @@
 
 namespace bdap {
 
-class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin> {
+class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin>
+{
     int log_num_buckets_;
     std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
     std::vector<int> seeds_;
@@ -24,16 +25,16 @@ class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin> {
 
 public:
     NaiveBayesCountMin(int num_hashes, int log_num_buckets, double threshold)
-    : log_num_buckets_(log_num_buckets), num_buckets_(1 << log_num_buckets),
-    num_hashes_(num_hashes), offset_(num_hashes_*num_buckets_)
+            : log_num_buckets_(log_num_buckets), num_buckets_(1 << log_num_buckets),
+              num_hashes_(num_hashes), offset_(num_hashes_ * num_buckets_)
     {
-        buckets_.resize(2*offset_,1);
+        buckets_.resize(2 * offset_, 1);
         seeds_.resize(num_hashes_);
 
         seeds_[0] = 0x9748cd;
-        for(int i = 1 ; i<num_hashes_ ; i++)
+        for (int i = 1; i < num_hashes_; i++)
         {
-            seeds_[i] = seeds_[i-1] * i;
+            seeds_[i] = seeds_[i - 1] * i;
         }
         num_ngram_spam = 1;
         num_ngram_ham = 1;
@@ -61,9 +62,9 @@ public:
         while (iter)
         {
             auto next = iter.next();
-            for(int i = 0 ; i<num_hashes_ ; i++)
+            for (int i = 0; i < num_hashes_; i++)
             {
-                buckets_[offset + i*num_buckets_ + get_bucket(next,seeds_[i])]++;
+                buckets_[offset + i * num_buckets_ + get_bucket(next, seeds_[i])]++;
             }
         }
     }
@@ -90,12 +91,12 @@ public:
         while (iter)
         {
             auto next = iter.next();
-            double min =  buckets_[offset + get_bucket(next,seeds_[0])];
-            for(int i=1 ; i<num_hashes_ ; i++)
+            double min = buckets_[offset + get_bucket(next, seeds_[0])];
+            for (int i = 1; i < num_hashes_; i++)
             {
                 // Find min
-                double current_value = buckets_[offset + i*num_buckets_ + get_bucket(next,seeds_[i])];
-                if(current_value < min)
+                double current_value = buckets_[offset + i * num_buckets_ + get_bucket(next, seeds_[i])];
+                if (current_value < min)
                 {
                     min = current_value;
                 }
@@ -117,7 +118,7 @@ public:
     }
 
 private:
-    size_t get_bucket(std::string_view ngram,int seed) const
+    size_t get_bucket(std::string_view ngram, int seed) const
     { return get_bucket(hash(ngram, seed)); }
 
     size_t get_bucket(size_t hash) const
