@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
         {
             for (int buckets = 5; buckets < 16; buckets += 5)
             {
-                for (double thresh = 0.5; thresh < 0.9; thresh += 0.1)
+                for (double thresh = 0.15; thresh < 1.0; thresh += 0.1)
                 {
                     for (int hash = 2; hash < 11; hash += 4)
                     {
