@@ -55,14 +55,10 @@ std::vector<Email> load_emails(int seed)
 
     // Windows
 //    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
 
     // Linux
 //    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
@@ -72,11 +68,11 @@ std::vector<Email> load_emails(int seed)
 //    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Remote
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
+    load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
+    load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
+    load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
+    load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
+    load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Shuffle the emails
     std::default_random_engine g(seed);
@@ -175,13 +171,13 @@ int main(int argc, char *argv[])
                         auto accuracy_values = stream_emails(emails, clf, accuracy, win);
 
                         outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
-                                << " threshold: " << thresh << " hash: " << hash << " ---------" << std::endl;
+                                << " L. rate:: " << thresh << " hash: " << hash << " ---------" << std::endl;
                         outfile << "Accuracy = " << accuracy.get_accuracy() << std::endl;
                         outfile << "Precision = " << accuracy.get_precision() << std::endl;
                         outfile << "Recall = " << accuracy.get_recall() << std::endl;
 
                         std::cout << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
-                                  << " threshold: " << thresh << " hash: " << hash << " ---------" << std::endl;
+                                  << " L. rate:: " << thresh << " hash: " << hash << " ---------" << std::endl;
                         std::cout << "Accuracy = " << accuracy.get_accuracy() << std::endl;
                         std::cout << "Precision = " << accuracy.get_precision() << std::endl;
                         std::cout << "Recall = " << accuracy.get_recall() << std::endl;
@@ -256,40 +252,40 @@ int main(int argc, char *argv[])
     }
     outfile << std::endl;
     outfile << "############## Best: " << "ngram: " << best_ngram << " | buckets: " << best_buckets
-            << " | window: " << best_window << " | threshold: " << best_thresh << " hash: " << best_hash << " ##############" << std::endl;
+            << " | window: " << best_window << " | L. rate:: " << best_thresh << " hash: " << best_hash << " ##############" << std::endl;
     outfile << "Accuracy: " << max_acc << std::endl;
     outfile << "Precision: " << max_prec << std::endl;
     outfile << "Recall: " << max_rec << std::endl;
     outfile << std::endl;
     outfile << "############## Second Best: " << "ngram: " << best_ngram2 << " | buckets: " << best_buckets2
-            << " | window: " << best_window2 << " | threshold: " << best_thresh2 << " hash: " << best_hash2 << " ##############" << std::endl;
+            << " | window: " << best_window2 << " | L. rate:: " << best_thresh2 << " hash: " << best_hash2 << " ##############" << std::endl;
     outfile << "Accuracy: " << max_acc2 << std::endl;
     outfile << "Precision: " << max_prec2 << std::endl;
     outfile << "Recall: " << max_rec2 << std::endl;
     outfile << std::endl;
     outfile << "############## Third Best: " << "ngram: " << best_ngram3 << " | buckets: " << best_buckets3
-            << " | window: " << best_window3 << " | threshold: " << best_thresh3 << " hash: " << best_hash3 << " ##############" << std::endl;
+            << " | window: " << best_window3 << " | L. rate:: " << best_thresh3 << " hash: " << best_hash3 << " ##############" << std::endl;
     outfile << "Accuracy: " << max_acc3 << std::endl;
     outfile << "Precision: " << max_prec3 << std::endl;
     outfile << "Recall: " << max_rec3 << std::endl;
     outfile << std::endl;
     outfile << "############## Best Accuracy: " << "ngram: " << ngram_acc << " | buckets: " << buckets_acc
-            << " | window: " << window_acc << " | threshold: " << thresh_acc << " hash: " << hash_acc << " ##############" << std::endl;
+            << " | window: " << window_acc << " | L. rate:: " << thresh_acc << " hash: " << hash_acc << " ##############" << std::endl;
     outfile << "Accuracy: " << best_acc << std::endl;
     outfile << std::endl;
     outfile << "############## Best Precision: " << "ngram: " << ngram_prec << " | buckets: " << buckets_prec
-            << " | best_window: " << window_prec << " | threshold: " << thresh_prec << " hash: " << hash_prec << " ##############" << std::endl;
+            << " | best_window: " << window_prec << " | L. rate:: " << thresh_prec << " hash: " << hash_prec << " ##############" << std::endl;
     outfile << "Precision: " << best_prec << std::endl;
     outfile << std::endl;
     outfile << "############## Best Recall: " << "ngram: " << ngram_rec << " | buckets: " << buckets_rec
-            << " | window: " << window_rec << " | threshold: " << thresh_rec << " hash: " << hash_rec << " ##############" << std::endl;
+            << " | window: " << window_rec << " | L. rate:: " << thresh_rec << " hash: " << hash_rec << " ##############" << std::endl;
     outfile << "Recall: " << best_rec << std::endl;
 
 
     std::cout << std::endl;
     std::cout << "############## Best: " << "ngram: " << best_ngram << " buckets: " << best_buckets
               << " window: "
-              << best_window << " threshold: " << best_thresh << " hash: " << best_hash << " ##############" << std::endl;
+              << best_window << " L. rate:: " << best_thresh << " hash: " << best_hash << " ##############" << std::endl;
     std::cout << "Accuracy: " << max_acc << std::endl;
     std::cout << "Precision: " << max_prec << std::endl;
     std::cout << "Recall: " << max_rec << std::endl;
