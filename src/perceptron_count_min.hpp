@@ -69,7 +69,7 @@ public:
             double min = weights_[get_bucket(next, seeds_[0])];
             for (int i = 1; i < num_hashes_; i++)
             {
-                // Find min
+                // TODO: Find min --> Find median
                 double current_value = weights_[i * num_buckets_ + get_bucket(next, seeds_[i])];
                 if (current_value < min)
                 {

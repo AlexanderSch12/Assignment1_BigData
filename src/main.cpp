@@ -54,15 +54,15 @@ std::vector<Email> load_emails(int seed)
     // Data can be found on the departmental computers in /cw/bdap/assignment1
 
     // Windows
-//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
-//    load_emails(emails,
-//                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
+    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
+    load_emails(emails,
+                "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
 
     // Linux
 //    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
@@ -72,11 +72,11 @@ std::vector<Email> load_emails(int seed)
 //    load_emails(emails, "/mnt/c/Users/alexa/Documents/KUL/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Remote
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
-   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
+//   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
+//   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
+//   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
+//   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
+//   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Shuffle the emails
     std::default_random_engine g(seed);
@@ -165,14 +165,14 @@ int main(int argc, char *argv[])
                 {
                     for (int hash = 2; hash < 11; hash += 4)
                     {
-                        //NaiveBayesFeatureHashing clf(buckets,thresh);
+                        NaiveBayesFeatureHashing clf(5,0.6);
                         //PerceptronFeatureHashing clf(buckets,0.15);
 
                         // TODO: logBuckets cannot be big for vector, log 30 is too big for bayes hashing because *2
                         //NaiveBayesCountMin clf(hash, buckets, thresh);
-                        PerceptronCountMin clf(hash,buckets,thresh);
-                        clf.ngram_k = ngram;
-                        auto accuracy_values = stream_emails(emails, clf, accuracy, win);
+                        //PerceptronCountMin clf(hash,buckets,thresh);
+                        clf.ngram_k = 3;
+                        auto accuracy_values = stream_emails(emails, clf, accuracy, 20);
 
                         outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
                                 << " threshold: " << thresh << " hash: " << hash << " ---------" << std::endl;

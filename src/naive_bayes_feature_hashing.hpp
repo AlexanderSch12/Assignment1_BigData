@@ -68,7 +68,10 @@ public:
         // P(Y=1|X) = ---------------------------------
         //              P(Y=1)P(X|Y=1) + P(Y=0)P(X|Y=0)
         double probability = probSpam - (probSpam + std::log1p(exp(probHam - probSpam)));
+        //return probability;
         return std::exp(probability);
+        //return probSpam - probHam;
+        //return std::exp(probSpam - probHam);
     }
 
     // https://www.atoti.io/articles/how-to-solve-the-zero-frequency-problem-in-naive-bayes/
