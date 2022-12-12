@@ -66,20 +66,24 @@ public:
         while (iter)
         {
             auto next = iter.next();
-            double min = weights_[get_bucket(next, seeds_[0])];
+            std::vector<double> weights;
+            weights.push_back(weights_[get_bucket(next, seeds_[0])]);
             for (int i = 1; i < num_hashes_; i++)
             {
-                // TODO: Find min --> Find median
-                double current_value = weights_[i * num_buckets_ + get_bucket(next, seeds_[i])];
-                if (current_value < min)
-                {
-                    min = current_value;
-                }
+                weights.push_back(weights_[i * num_buckets_ + get_bucket(next, seeds_[i])]);
             }
-            // Use smallest
-            prediction += min;
-        }
 
+            int n = weights.size();
+            if( n % 2 == 0)
+            {
+                nth_element(weights.begin(),weights.begin() + n / 2,weights.end());
+                nth_element(weights.begin(),weights.begin() + (n - 1) / 2,weights.end());
+                prediction = (weights[(n - 1) / 2] + weights[n / 2]) / 2.0;
+            } else {
+                nth_element(weights.begin(),weights.begin() + n / 2,weights.end());
+                prediction = weights[n / 2];
+            }
+        }
         return prediction + bias_;
     }
 
