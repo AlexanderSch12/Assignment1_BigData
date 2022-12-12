@@ -155,9 +155,9 @@ int main(int argc, char *argv[])
 
     Accuracy accuracy;
     std::ofstream outfile{outfname};
-    for (int ngram = 1; ngram < 10; ngram++)
+    for (int ngram = 1; ngram < 8; ngram++)
     {
-        for (int win = 10; win < 161; win += 25)
+        for (int win = 10; win < 125; win += 25)
         {
             for (int buckets = 5; buckets < 16; buckets += 5)
             {
@@ -165,14 +165,12 @@ int main(int argc, char *argv[])
                 {
                     for (int hash = 2; hash < 11; hash += 4)
                     {
-                        NaiveBayesFeatureHashing clf(5,0.6);
+                        // NaiveBayesFeatureHashing clf(5,0.6);
                         //PerceptronFeatureHashing clf(buckets,0.15);
-
-                        // TODO: logBuckets cannot be big for vector, log 30 is too big for bayes hashing because *2
                         //NaiveBayesCountMin clf(hash, buckets, thresh);
-                        //PerceptronCountMin clf(hash,buckets,thresh);
-                        clf.ngram_k = 3;
-                        auto accuracy_values = stream_emails(emails, clf, accuracy, 20);
+                        PerceptronCountMin clf(hash,buckets,thresh);
+                        clf.ngram_k = ngram;
+                        auto accuracy_values = stream_emails(emails, clf, accuracy, win);
 
                         outfile << "--------- ngram: " << ngram << " window: " << win << " log_bucket: " << buckets
                                 << " threshold: " << thresh << " hash: " << hash << " ---------" << std::endl;
