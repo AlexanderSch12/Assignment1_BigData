@@ -67,8 +67,7 @@ public:
         {
             auto next = iter.next();
             std::vector<double> weights;
-            weights.push_back(weights_[get_bucket(next, seeds_[0])]);
-            for (int i = 1; i < num_hashes_; i++)
+            for (int i = 0; i < num_hashes_; i++)
             {
                 weights.push_back(weights_[i * num_buckets_ + get_bucket(next, seeds_[i])]);
             }
@@ -78,10 +77,10 @@ public:
             {
                 nth_element(weights.begin(),weights.begin() + n / 2,weights.end());
                 nth_element(weights.begin(),weights.begin() + (n - 1) / 2,weights.end());
-                prediction = (weights[(n - 1) / 2] + weights[n / 2]) / 2.0;
+                prediction = (double)(weights[(n - 1) / 2] + weights[n / 2]) / 2.0;
             } else {
                 nth_element(weights.begin(),weights.begin() + n / 2,weights.end());
-                prediction = weights[n / 2];
+                prediction = (double)weights[n / 2];
             }
         }
         return prediction + bias_;
