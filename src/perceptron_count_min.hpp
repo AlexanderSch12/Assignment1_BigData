@@ -15,6 +15,7 @@ class PerceptronCountMin : public BaseClf<PerceptronCountMin>
     double bias_;
     std::vector<double> weights_;
     std::vector<int> seeds_;
+
     int num_buckets_;
     int num_hashes_;
 
@@ -34,7 +35,7 @@ public:
 
     }
 
-    double signum(double a) const
+    static int signum(double a)
     { return (a > 0) - (a < 0); }
 
     void update_(const Email &email)
@@ -42,45 +43,49 @@ public:
         EmailIter iter = EmailIter(email, this->ngram_k);
 
         // w(n+1) = w(n) + l[d(n) - y(n)]x(n)
-        double yn = signum(predict_(email));
+        int yn = signum(predict_(email));
         int dn;
         if (email.is_spam()) dn = 1;
         else dn = -1;
 
-        while (iter)
+        int error = dn - yn;
+        while (iter && error != 0)
         {
             auto next = iter.next();
-            for (int i = 0; i < num_hashes_; i++)
+            for (int hash = 0; hash < num_hashes_; hash++)
             {
-                weights_[i * num_buckets_ + get_bucket(next, seeds_[i])] += learning_rate_ * (dn - yn);
+                weights_[hash * num_buckets_ + get_bucket(next, seeds_[hash])] += learning_rate_ * error;
             }
         }
 
-        bias_ += learning_rate_ * (dn - yn);
+        bias_ += learning_rate_ * error;
     }
 
     double predict_(const Email &email) const
     {
         EmailIter iter = EmailIter(email, this->ngram_k);
         double prediction = 0.0;
-        while (iter)
+
+        std::vector<double> median_weights(num_hashes_);
+
+        while(iter)
         {
             auto next = iter.next();
-            std::vector<double> weights;
             for (int i = 0; i < num_hashes_; i++)
             {
-                weights.push_back(weights_[i * num_buckets_ + get_bucket(next, seeds_[i])]);
+                median_weights[i] = weights_[i * num_buckets_ + get_bucket(next,seeds_[i])];
             }
 
-            int n = weights.size();
-            if( n % 2 == 0)
+            int n = median_weights.size();
+            if (n % 2 == 0)
             {
-                nth_element(weights.begin(),weights.begin() + n / 2,weights.end());
-                nth_element(weights.begin(),weights.begin() + (n - 1) / 2,weights.end());
-                prediction = (double)(weights[(n - 1) / 2] + weights[n / 2]) / 2.0;
-            } else {
-                nth_element(weights.begin(),weights.begin() + n / 2,weights.end());
-                prediction = (double)weights[n / 2];
+                nth_element(median_weights.begin(), median_weights.begin() + n / 2, median_weights.end());
+                nth_element(median_weights.begin(), median_weights.begin() + (n - 1) / 2, median_weights.end());
+                prediction += (double) (median_weights[(n - 1) / 2] + median_weights[n / 2]) / 2.0;
+            } else
+            {
+                nth_element(median_weights.begin(), median_weights.begin() + n / 2, median_weights.end());
+                prediction += (double) median_weights[n / 2];
             }
         }
         return prediction + bias_;

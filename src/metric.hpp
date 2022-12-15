@@ -106,6 +106,10 @@ struct Recall
 
 struct ConfusionMatrix
 {
+    int TN = 0;
+    int FP = 0;
+    int TP = 0;
+    int FN = 0;
 
     template<typename Clf>
     void evaluate(const Clf &clf, const std::vector<Email> &emails)
@@ -117,9 +121,14 @@ struct ConfusionMatrix
     template<typename Clf>
     void evaluate(const Clf &clf, Email &emails)
     {
-
+        bool lab = emails.is_spam();
+        double pr = clf.predict(emails);
+        bool pred = clf.classify(pr);
+        TP += static_cast<int>((lab && pred));
+        FP += static_cast<int>((!lab && pred));
+        FN += static_cast<int>((lab && !pred));
+        TN += static_cast<int>((!lab && !pred));
     }
-
 };
 
 

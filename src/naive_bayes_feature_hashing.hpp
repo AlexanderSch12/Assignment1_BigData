@@ -13,7 +13,7 @@ namespace bdap {
 class NaiveBayesFeatureHashing : public BaseClf<NaiveBayesFeatureHashing>
 {
     int log_num_buckets_;
-    std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
+    std::vector<int> buckets_; // First num_buckets are ham, rest num_buckets is spam
 
     int num_buckets_;
     double num_ngram_spam;

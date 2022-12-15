@@ -27,7 +27,7 @@ public:
         weights_.resize(num_buckets_, 0.0);
     }
 
-    double signum(double a) const
+    static int signum(double a)
     { return (a > 0) - (a < 0); }
 
     void update_(const Email &email)
@@ -35,17 +35,18 @@ public:
         EmailIter iter = EmailIter(email, this->ngram_k);
 
         // w(n+1) = w(n) + l[d(n) - y(n)]x(n)
-        double yn = signum(predict_(email));
+        int yn = signum(predict_(email));
         int dn;
         if (email.is_spam()) dn = 1;
         else dn = -1;
 
-        while (iter)
+        int error = dn - yn;
+        while (iter && error != 0)
         {
-            weights_[get_bucket(iter.next())] += learning_rate_ * (dn - yn);
+            weights_[get_bucket(iter.next())] += learning_rate_ * error;
         }
 
-        bias_ +=  learning_rate_ * (dn - yn);
+        bias_ += learning_rate_ * error;
     }
 
     double predict_(const Email &email) const

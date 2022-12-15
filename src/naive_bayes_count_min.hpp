@@ -12,7 +12,7 @@ namespace bdap {
 class NaiveBayesCountMin : public BaseClf<NaiveBayesCountMin>
 {
     int log_num_buckets_;
-    std::vector<double> buckets_; // First num_buckets are ham, rest num_buckets is spam
+    std::vector<int> buckets_; // First num_buckets are ham, rest num_buckets is spam
     std::vector<int> seeds_;
     int num_buckets_;
     int num_ngram_spam;
