@@ -27,7 +27,7 @@ def plot_metric_values(acc, prec, rec):
     # plt.title("Perceptron - CountMin | log_buckets = 17, hashes = 3, ngram = 3, learning-rate = 0.8, windows = 100", y=0.8)
     plt.legend(loc="lower right")
     plt.yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
-    ax.set_xlabel("time")
+    ax.set_xlabel("windows")
     ax.set_ylabel("metric value")
     plt.show()
 

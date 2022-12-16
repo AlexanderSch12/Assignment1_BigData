@@ -123,47 +123,80 @@ int main(int argc, char *argv[])
     std::cout << "#emails: " << emails.size() << std::endl;
 
     Accuracy metric;
-   // NaiveBayesFeatureHashing bh{29,0.5};
-    // NaiveBayesCountMin bcm{3,17,0.5};
-   PerceptronFeatureHashing ph{35, 0.8};
-//   PerceptronCountMin pcm{3,17,0.8};
-     //bh.ngram_k = 5;
-//    bcm.ngram_k = 3;
-    ph.ngram_k = 1;
-//    pcm.ngram_k = 3;
+    NaiveBayesFeatureHashing bh{17,0.5};
+    NaiveBayesCountMin bcm{3,17,0.5};
+    PerceptronFeatureHashing ph{17, 0.8};
+    PerceptronCountMin pcm{3,17,0.8};
+    bh.ngram_k = 3;
+    bcm.ngram_k = 3;
+    ph.ngram_k = 3;
+    pcm.ngram_k =3;
 
     steady_clock::time_point begin = steady_clock::now();
-    auto [accuracy,precision,recall] = stream_emails(emails, ph, metric, 100);
+    auto [accuracy,precision,recall] = stream_emails(emails, bh, metric, 100);
     steady_clock::time_point end = steady_clock::now();
 
+    std::cout << "------- Bayes Hashing ------- " << std::endl;
     std::cout << (duration_cast<milliseconds>(end-begin).count()/1000.0) << "s" << std::endl;
-
-
-    // write out the results
-    std::ofstream bh_acc{"bh_acc"};
-    std::ofstream bh_prec{"bh_prec"};
-    std::ofstream bh_rec{"bh_rec"};
-
-    bh_acc << "window=" << 125 << std::endl;
-    bh_acc << "log_buckers=" << 12 << std::endl;
-    bh_acc << "threshold=" << 0.8 << std::endl;
-
-    bh_prec << "window=" << 125 << std::endl;
-    bh_prec << "log_buckers=" << 12 << std::endl;
-    bh_prec << "threshold=" << 0.8 << std::endl;
-
-    bh_rec << "window=" << 125 << std::endl;
-    bh_rec << "log_buckers=" << 12 << std::endl;
-    bh_rec << "threshold=" << 0.8 << std::endl;
-    for (int i = 0 ; i < accuracy.size() ; i++)
-    {
-        bh_acc << accuracy[i] << std::endl;
-        bh_prec << precision[i] << std::endl;
-        bh_rec << recall[i] << std::endl;
-    }
-
     std::cout << "Accuracy: " <<  accuracy[accuracy.size()-1] << std::endl;
     std::cout << "Precision: " << precision[precision.size()-1] << std::endl;
     std::cout << "Recall: " << recall[recall.size()-1] << std::endl;
+    std::cout << std::endl;
+
+    begin = steady_clock::now();
+    auto [accuracy1,precision1,recall1] = stream_emails(emails, bcm, metric, 100);
+    end = steady_clock::now();
+
+    std::cout << "------- Bayes CountMin ------- " << std::endl;
+    std::cout << (duration_cast<milliseconds>(end-begin).count()/1000.0) << "s" << std::endl;
+    std::cout << "Accuracy: " <<  accuracy1[accuracy1.size()-1] << std::endl;
+    std::cout << "Precision: " << precision1[precision1.size()-1] << std::endl;
+    std::cout << "Recall: " << recall1[recall1.size()-1] << std::endl;
+    std::cout << std::endl;
+
+    begin = steady_clock::now();
+    auto [accuracy2,precision2,recall2] = stream_emails(emails, ph, metric, 100);
+    end = steady_clock::now();
+
+    std::cout << "------- Peceptron Hashing ------- " << std::endl;
+    std::cout << (duration_cast<milliseconds>(end-begin).count()/1000.0) << "s" << std::endl;
+    std::cout << "Accuracy: " <<  accuracy2[accuracy2.size()-1] << std::endl;
+    std::cout << "Precision: " << precision2[precision2.size()-1] << std::endl;
+    std::cout << "Recall: " << recall2[recall2.size()-1] << std::endl;
+    std::cout << std::endl;
+
+    begin = steady_clock::now();
+    auto [accuracy3,precision3,recall3] = stream_emails(emails, pcm, metric, 100);
+    end = steady_clock::now();
+
+    std::cout << "------- Perceptron CountMin ------- " << std::endl;
+    std::cout << (duration_cast<milliseconds>(end-begin).count()/1000.0) << "s" << std::endl;
+    std::cout << "Accuracy: " <<  accuracy3[accuracy3.size()-1] << std::endl;
+    std::cout << "Precision: " << precision3[precision3.size()-1] << std::endl;
+    std::cout << "Recall: " << recall3[recall3.size()-1] << std::endl;
+    std::cout << std::endl;
+    // write out the results
+//    std::ofstream bh_acc{"bh_acc"};
+//    std::ofstream bh_prec{"bh_prec"};
+//    std::ofstream bh_rec{"bh_rec"};
+//
+//    bh_acc << "window=" << 125 << std::endl;
+//    bh_acc << "log_buckers=" << 12 << std::endl;
+//    bh_acc << "threshold=" << 0.8 << std::endl;
+//
+//    bh_prec << "window=" << 125 << std::endl;
+//    bh_prec << "log_buckers=" << 12 << std::endl;
+//    bh_prec << "threshold=" << 0.8 << std::endl;
+//
+//    bh_rec << "window=" << 125 << std::endl;
+//    bh_rec << "log_buckers=" << 12 << std::endl;
+//    bh_rec << "threshold=" << 0.8 << std::endl;
+//    for (int i = 0 ; i < accuracy.size() ; i++)
+//    {
+//        bh_acc << accuracy[i] << std::endl;
+//        bh_prec << precision[i] << std::endl;
+//        bh_rec << recall[i] << std::endl;
+//    }
+
     return 0;
 }
