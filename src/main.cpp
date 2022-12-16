@@ -52,11 +52,18 @@ std::vector<Email> load_emails(int seed)
     std::vector<Email> emails;
 
     // Windows
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
-    load_emails(emails,"C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
-    load_emails(emails,"C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
-    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Enron.txt");
+//    load_emails(emails,"C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\SpamAssasin.txt");
+//    load_emails(emails,"C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2005.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2006.txt");
+//    load_emails(emails, "C:\\Users\\alexa\\Documents\\KUL\\BigData\\Assignment1\\Assignment1_BigData\\data\\Trec2007.txt");
+
+   // Remote Linux
+   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Enron.txt");
+   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/SpamAssasin.txt");
+   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2005.txt");
+   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2006.txt");
+   load_emails(emails, "/home/r0673385/Documents/BigData/Assignment1/Assignment1_BigData/data/Trec2007.txt");
 
     // Shuffle the emails
     std::default_random_engine g(seed);
